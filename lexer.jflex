@@ -56,13 +56,12 @@ import java.io.InputStreamReader;
 
 Newline    = \r | \n | \r\n
 Whitespace = [ \t\f] | {Newline}
-Number     = [0-9]+
+Number     = [0-9]*
 
 /* comments */
-Comment = {TraditionalComment} | {EndOfLineComment}
-TraditionalComment = "/*" {CommentContent} \*+ "/"
-EndOfLineComment = "//" [^\r\n]* {Newline}
-CommentContent = ( [^*] | \*+[^*/] )*
+Comment ="%%" {frase}* {Newline}
+frase = {palabra} | {palabra} {Whitespace}*
+palabra = [A-Za-z0-9]*
 
 ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 
@@ -77,7 +76,7 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 
 <YYINITIAL> {
 
-  {Whitespace} {                              }
+  {Whitespace} {}
   ";"          { return symbolFactory.newSymbol("SEMI", SEMI); }
   "+"          { return symbolFactory.newSymbol("PLUS", PLUS); }
   "-"          { return symbolFactory.newSymbol("MINUS", MINUS); }
@@ -86,7 +85,8 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   "("          { return symbolFactory.newSymbol("LPAREN", LPAREN); }
   ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
   {Number}     { return symbolFactory.newSymbol("NUMBER", NUMBER, Integer.parseInt(yytext())); }
-}
+  {Comment}	   { }
+  }
 
 
 
