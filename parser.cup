@@ -63,8 +63,8 @@ expr      ::= expr:e1 PLUS  expr:e2         {: RESULT = e1+e2;        :}
              | LPAREN expr:e RPAREN	         {: RESULT = e;           :}
              | INT_NUMBER:n	                 {: RESULT = n;           :}
              ;
-             
-expr_float      ::= expr_float:e1 PLUS  expr_float:e2         {: RESULT = e1+e2;        :}
+ 
+ expr_float      ::= expr_float:e1 PLUS  expr_float:e2         {: RESULT = e1+e2;        :}
 			 | expr_float:e1 PLUS  expr:e2         {: RESULT = e1+e2;        :}
 			 |expr:e1 PLUS  expr_float:e2         {: RESULT = e1+e2;        :}
 
@@ -81,5 +81,6 @@ expr_float      ::= expr_float:e1 PLUS  expr_float:e2         {: RESULT = e1+e2;
              %prec UMINUS
              | LPAREN expr_float:e RPAREN	         {: RESULT = e;           :}
              | DEC_NUMBER:n 				 {: RESULT = n;           :}
-             ;
+             ;            
+
        

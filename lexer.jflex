@@ -56,9 +56,12 @@ import java.io.InputStreamReader;
 
 Newline    = \r | \n | \r\n
 Whitespace = [ \t\f] | {Newline}
-NumLiteral     = [0-9]*
+NumLiteral = [0-9]*
+HexLiteral = [0-9a-fA-F]*
 Int_Number = {NumLiteral}
 Dec_Number = {NumLiteral}"."{NumLiteral} | "."{NumLiteral}
+Hex_Number = 0 [xX] [1-9a-fA-F] {HexLiteral}
+Oct_Number = 0 [xX] 0 {HexLiteral}
 
 /* comments */
 Comment ="%%" {frase}* {Newline}
@@ -88,6 +91,8 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
   {Int_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext())); }
   {Dec_Number} { return symbolFactory.newSymbol("DEC_NUMBER", DEC_NUMBER, Float.parseFloat(yytext())); }
+  {Hex_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(2, yytext().length()), 16));}
+  {Oct_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(3, yytext().length()), 8));}
   {Comment}	   { }
   }
 
