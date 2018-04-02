@@ -56,7 +56,9 @@ import java.io.InputStreamReader;
 
 Newline    = \r | \n | \r\n
 Whitespace = [ \t\f] | {Newline}
-Number     = [0-9]*
+NumLiteral     = [0-9]*
+Int_Number = {NumLiteral}
+Dec_Number = {NumLiteral}"."{NumLiteral} | "."{NumLiteral}
 
 /* comments */
 Comment ="%%" {frase}* {Newline}
@@ -84,7 +86,8 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   "n"          { return symbolFactory.newSymbol("UMINUS", UMINUS); }
   "("          { return symbolFactory.newSymbol("LPAREN", LPAREN); }
   ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
-  {Number}     { return symbolFactory.newSymbol("NUMBER", NUMBER, Integer.parseInt(yytext())); }
+  {Int_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext())); }
+  {Dec_Number} { return symbolFactory.newSymbol("DEC_NUMBER", DEC_NUMBER, Float.parseFloat(yytext())); }
   {Comment}	   { }
   }
 

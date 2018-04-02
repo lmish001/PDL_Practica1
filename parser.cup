@@ -32,12 +32,12 @@ scan with {: return lexer.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
 terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, LPAREN, RPAREN;
-terminal Integer    NUMBER;        // our scanner provides numbers as integers
-
+terminal Integer    INT_NUMBER;       
+terminal Float DEC_NUMBER;
 /* Non terminals */
 non terminal            expr_list;
 non terminal Integer    expr;      // used to store evaluated subexpressions
-
+non terminal Float expr_float;
 /* Precedences */
 precedence left PLUS, MINUS;
 precedence left TIMES;
@@ -48,6 +48,9 @@ expr_list ::= expr_list expr:e SEMI             {: System.out.println(e); :}
 			//| expr_list expr:e COMMENT     	{: System.out.println(e); :}
             | expr:e SEMI                  		{: System.out.println(e); :}
             | expr:e                   			{: System.out.println(e); :}
+            | expr_list expr_float:e SEMI             {: System.out.println(e); :}
+            | expr_float:e SEMI                  		{: System.out.println(e); :}
+            | expr_float:e                   			{: System.out.println(e); :}
             //| COMMENT							{: :}
             ;
 
@@ -58,6 +61,25 @@ expr      ::= expr:e1 PLUS  expr:e2         {: RESULT = e1+e2;        :}
              | PLUS expr:e                  {: RESULT = e;           :}
              %prec UMINUS
              | LPAREN expr:e RPAREN	         {: RESULT = e;           :}
-             | NUMBER:n	                     {: RESULT = n;           :}
+             | INT_NUMBER:n	                 {: RESULT = n;           :}
+             ;
+             
+expr_float      ::= expr_float:e1 PLUS  expr_float:e2         {: RESULT = e1+e2;        :}
+			 | expr_float:e1 PLUS  expr:e2         {: RESULT = e1+e2;        :}
+			 |expr:e1 PLUS  expr_float:e2         {: RESULT = e1+e2;        :}
+
+             | expr_float:e1 MINUS expr_float:e2        {: RESULT = e1-e2;        :}
+             | expr_float:e1 MINUS expr:e2        {: RESULT = e1-e2;        :}
+             | expr:e1 MINUS expr_float:e2        {: RESULT = e1-e2;        :}           
+             
+             | expr_float:e1 TIMES expr_float:e2        {: RESULT = e1*e2;        :}
+			 | expr_float:e1 TIMES expr:e2        {: RESULT = e1*e2;        :}
+             | expr:e1 TIMES expr_float:e2        {: RESULT = e1*e2;        :}
+             
+             | MINUS expr_float:e                 {: RESULT = -e;           :}
+             | PLUS expr_float:e                  {: RESULT = e;           :}
+             %prec UMINUS
+             | LPAREN expr_float:e RPAREN	         {: RESULT = e;           :}
+             | DEC_NUMBER:n 				 {: RESULT = n;           :}
              ;
        

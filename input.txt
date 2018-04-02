@@ -3,10 +3,11 @@
 %%
 
 %%operandos individuales
-200;
+5.5+1.5;
 -1;%%kjgksdhfg
 +200;%% esto es un comentario
 %%operaciones simples
-4+5;
-5+6;
+4.5+5.5;
+5.5+6;
 5*3;
+6*.1;
