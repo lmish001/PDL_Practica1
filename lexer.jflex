@@ -58,10 +58,11 @@ Newline    = \r | \n | \r\n
 Whitespace = [ \t\f] | {Newline}
 NumLiteral = [0-9]*
 HexLiteral = [0-9a-fA-F]*
+OctLiteral = [0-7]*
 Int_Number = {NumLiteral}
 Dec_Number = {NumLiteral}"."{NumLiteral} | "."{NumLiteral}
 Hex_Number = 0 [xX] [1-9a-fA-F] {HexLiteral}
-Oct_Number = 0 [xX] 0 {HexLiteral}
+Oct_Number = 0 [xX] 0 {OctLiteral}
 
 /* comments */
 Comment ="%%" {frase}* {Newline}
