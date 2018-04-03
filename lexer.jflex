@@ -64,10 +64,14 @@ Dec_Number = {NumLiteral}"."{NumLiteral} | "."{NumLiteral}
 Hex_Number = 0 [xX] [1-9a-fA-F] {HexLiteral}
 Oct_Number = 0 [xX] 0 {OctLiteral}
 
+Number = {Int_Number}|{Dec_Number}|{Hex_Number}|{Oct_Number}
+Op = "+"|"-"|"*"|"/"
 /* comments */
 Comment ="%%" {frase}* {Newline}
 frase = {palabra} | {palabra} {Whitespace}*
 palabra = [A-Za-z0-9]*
+
+/*uminus*/
 
 ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 
@@ -87,6 +91,7 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   "+"          { return symbolFactory.newSymbol("PLUS", PLUS); }
   "-"          { return symbolFactory.newSymbol("MINUS", MINUS); }
   "*"          { return symbolFactory.newSymbol("TIMES", TIMES); }
+  "/"		   { return symbolFactory.newSymbol("DIVIDEBY", DIVIDEBY); }
   "n"          { return symbolFactory.newSymbol("UMINUS", UMINUS); }
   "("          { return symbolFactory.newSymbol("LPAREN", LPAREN); }
   ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
