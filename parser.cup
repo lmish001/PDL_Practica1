@@ -54,6 +54,8 @@ expr_list 	::= expr_list e_int:e SEMI			{: System.out.println(e); :}
 				//| e_float:e						{: System.out.println(e); :}
 				;
 /*integer*/
+
+
 e_int 		::=	e_int:e1 PLUS t_int:e2			{: RESULT = e1+e2;        :}
 				| e_int:e1 MINUS t_int:e2		{: RESULT = e1-e2;        :}
 				| t_int:e1						{: RESULT = e1;        	:}
@@ -65,12 +67,18 @@ t_int 		::= t_int:e1 TIMES f_int:e2 		{: RESULT = e1*e2;        :}
 				
 f_int 		::= PLUS INT_NUMBER:e1				{: RESULT = e1;        :}
 				| MINUS INT_NUMBER:e1			{: RESULT = -e1;        :}
-				| INT_NUMBER:e1					{: RESULT = e1;        :}
+			    | MINUS PLUS INT_NUMBER:e1			{: RESULT = -e1;        :}
+			    | PLUS MINUS INT_NUMBER:e1			{: RESULT = -e1;        :}
+			    | MINUS MINUS INT_NUMBER:e1			{: RESULT = e1;        :}
+				|INT_NUMBER:e1					{: RESULT = e1;        :}
 				| p_int:e1						{: RESULT = e1;        :}
+				|MINUS p_int:e1						{: RESULT = -e1;        :}
+				|PLUS p_int:e1						{: RESULT = e1;        :}
 				;
 				
 p_int 		::= LPAREN e_int:e1 RPAREN			{: RESULT = e1;        :}
-				;
+
+		;
 /*float*/
 e_float 		::=	e_float:e1 PLUS t_float:e2	{: RESULT = e1+e2;        :}
 				| e_float:e1 MINUS t_float:e2	{: RESULT = e1-e2;        :}
@@ -93,8 +101,13 @@ t_float 		::= t_float:e1 TIMES f_float:e2 {: RESULT = e1*e2;        :}
 				
 f_float 		::= PLUS DEC_NUMBER:e1			{: RESULT = e1;        :}
 				| MINUS DEC_NUMBER:e1			{: RESULT = -e1;        :}
+				| MINUS PLUS DEC_NUMBER:e1			{: RESULT = -e1;        :}
+				| PLUS MINUS DEC_NUMBER:e1			{: RESULT = -e1;        :}
+				| MINUS MINUS DEC_NUMBER:e1			{: RESULT = e1;        :}
 				| DEC_NUMBER:e1					{: RESULT = e1;        :}
 				| p_float:e1					{: RESULT = e1;        :}
+				| PLUS p_float:e1					{: RESULT = e1;        :}
+				| MINUS p_float:e1					{: RESULT = -e1;        :}
 				;
 				
 p_float 		::= LPAREN e_float:e1 RPAREN	{: RESULT = e1;        :}
