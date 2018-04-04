@@ -95,6 +95,10 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   "n"          { return symbolFactory.newSymbol("UMINUS", UMINUS); }
   "("          { return symbolFactory.newSymbol("LPAREN", LPAREN); }
   ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
+  "exp"        { return symbolFactory.newSymbol("EXP", EXP); }
+  "log"        { return symbolFactory.newSymbol("LOG", LOG); }
+  "sin"        { return symbolFactory.newSymbol("SIN", SIN); }
+  "cos"        { return symbolFactory.newSymbol("COS", COS); }
   {Int_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext())); }
   {Dec_Number} { return symbolFactory.newSymbol("DEC_NUMBER", DEC_NUMBER, Float.parseFloat(yytext())); }
   {Hex_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(2, yytext().length()), 16));}

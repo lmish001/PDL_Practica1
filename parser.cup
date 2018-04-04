@@ -31,7 +31,7 @@ init with {:
 scan with {: return lexer.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN;
+terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN, EXP, LOG, SIN, COS;
 terminal Integer    INT_NUMBER;       
 terminal Float DEC_NUMBER;
 /* Non terminals */
@@ -98,6 +98,14 @@ f_float 		::= PLUS DEC_NUMBER:e1			{: RESULT = e1;        :}
 				;
 				
 p_float 		::= LPAREN e_float:e1 RPAREN	{: RESULT = e1;        :}
+				| EXP LPAREN e_float:e1 RPAREN	{: RESULT = (float)Math.exp(e1);        :}
+				| LOG LPAREN e_float:e1 RPAREN	{: RESULT = (float)Math.log(e1);        :}
+				| SIN LPAREN e_float:e1 RPAREN	{: RESULT = (float)Math.sin(e1);        :}
+				| COS LPAREN e_float:e1 RPAREN	{: RESULT = (float)Math.cos(e1);        :}
+				| EXP LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.exp(e1);        :}
+				| LOG LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.log(e1);        :}
+				| SIN LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.sin(e1);        :}
+				| COS LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.cos(e1);        :}
 				;  
 				      
 
