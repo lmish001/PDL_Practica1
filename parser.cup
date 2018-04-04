@@ -31,13 +31,13 @@ init with {:
 scan with {: return lexer.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN, EXP, LOG, SIN, COS;
-terminal Integer    INT_NUMBER;       
-terminal Float DEC_NUMBER;
+terminal            	SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN, EXP, LOG, SIN, COS;
+terminal Integer    	INT_NUMBER;       
+terminal Float 			DEC_NUMBER;
 /* Non terminals */
 non terminal            expr_list;
 non terminal Integer    e_int, t_int, f_int, p_int;      // used to store evaluated subexpressions
-non terminal Float e_float, t_float, f_float, p_float;
+non terminal Float 		e_float, t_float, f_float, p_float;
 /* Precedences 
 precedence left PLUS, MINUS;
 precedence left TIMES;
