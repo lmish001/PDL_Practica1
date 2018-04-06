@@ -35,9 +35,10 @@ terminal            	SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN,
 terminal Integer    	INT_NUMBER;       
 terminal Float 			DEC_NUMBER;
 /* Non terminals */
-non terminal            expr_list;
+non terminal            expr_list,par_neg, impar_neg, plus;
 non terminal Integer    e_int, t_int, f_int, p_int;      // used to store evaluated subexpressions
 non terminal Float 		e_float, t_float, f_float, p_float;
+
 /* Precedences 
 precedence left PLUS, MINUS;
 precedence left TIMES;
@@ -63,12 +64,12 @@ t_int 		::= t_int:e1 TIMES f_int:e2 		{: RESULT = e1*e2;        :}
 				| f_int:e1						{: RESULT = e1;        :}
 				;
 				
-f_int 		::= PLUS INT_NUMBER:e1				{: RESULT = e1;        :}
-				| MINUS INT_NUMBER:e1			{: RESULT = -e1;        :}
+f_int 		::= par_neg INT_NUMBER:e1		{: RESULT = e1;        :}
+				| impar_neg INT_NUMBER:e1	{: RESULT = -e1;        :}
 				| INT_NUMBER:e1					{: RESULT = e1;        :}
 				| p_int:e1						{: RESULT = e1;        :}
 				;
-				
+		
 p_int 		::= LPAREN e_int:e1 RPAREN			{: RESULT = e1;        :}
 				;
 /*float*/
@@ -107,6 +108,21 @@ p_float 		::= LPAREN e_float:e1 RPAREN	{: RESULT = e1;        :}
 				| SIN LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.sin(e1);        :}
 				| COS LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.cos(e1);        :}
 				;  
-				      
-
-       
+//sustitucion de uminus				      
+par_neg 		::= MINUS MINUS
+				| par_neg MINUS MINUS
+				| PLUS
+				| par_neg PLUS
+				| MINUS plus MINUS
+				| par_neg MINUS plus MINUS
+				;
+				
+impar_neg		::= MINUS
+				| MINUS plus
+				| par_neg MINUS
+				| par_neg MINUS plus					
+				;					   
+				
+plus 			::= plus PLUS
+				| PLUS
+				;				
