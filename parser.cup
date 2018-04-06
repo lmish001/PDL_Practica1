@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 
 parser code {:
   protected Lexer lexer;
+  Float mem = (float)0;
 :}
 
 /* define how to connect to the scanner! */
@@ -31,9 +32,9 @@ init with {:
 scan with {: return lexer.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            	SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN, EXP, LOG, SIN, COS;
+terminal            	SEMI, PLUS, MINUS, UMINUS, TIMES, DIVIDEBY, LPAREN, RPAREN, EXP, LOG, SIN, COS, EQ;
 terminal Integer    	INT_NUMBER;       
-terminal Float 			DEC_NUMBER;
+terminal Float 			DEC_NUMBER, MEM;
 /* Non terminals */
 non terminal            expr_list,par_neg, impar_neg, plus;
 non terminal Integer    e_int, t_int, f_int, p_int;      // used to store evaluated subexpressions
@@ -49,10 +50,12 @@ precedence left UMINUS;
 /* The grammar rules */
 expr_list 	::= expr_list e_int:e SEMI			{: System.out.println(e); :}
 				| e_int:e SEMI					{: System.out.println(e); :}
-				//| e_int:e						{: System.out.println(e); :}
 				| expr_list e_float:e SEMI		{: System.out.println(e); :}
 				| e_float:e SEMI				{: System.out.println(e); :}
-				//| e_float:e						{: System.out.println(e); :}
+				| MEM EQ e_int:e SEMI			{: System.out.println("MEM = "+e);mem = (float)e; :}
+				| MEM EQ e_float:e SEMI 		{: System.out.println("MEM = "+e);mem = (float)e; :}
+				| expr_list MEM EQ e_int:e SEMI	{: System.out.println("MEM = "+e);mem = (float)e; :}
+				| expr_list MEM EQ e_float:e SEMI{: System.out.println("MEM = "+e);mem = (float)e; :}
 				;
 /*integer*/
 e_int 		::=	e_int:e1 PLUS t_int:e2			{: RESULT = e1+e2;        :}
@@ -64,8 +67,8 @@ t_int 		::= t_int:e1 TIMES f_int:e2 		{: RESULT = e1*e2;        :}
 				| f_int:e1						{: RESULT = e1;        :}
 				;
 				
-f_int 		::= par_neg INT_NUMBER:e1		{: RESULT = e1;        :}
-				| impar_neg INT_NUMBER:e1	{: RESULT = -e1;        :}
+f_int 		::= par_neg INT_NUMBER:e1			{: RESULT = e1;        :}
+				| impar_neg INT_NUMBER:e1		{: RESULT = -e1;       :}
 				| INT_NUMBER:e1					{: RESULT = e1;        :}
 				| p_int:e1						{: RESULT = e1;        :}
 				;
@@ -92,9 +95,12 @@ t_float 		::= t_float:e1 TIMES f_float:e2 {: RESULT = e1*e2;        :}
 				| f_float:e1					{: RESULT = e1;        :}
 				;
 				
-f_float 		::= PLUS DEC_NUMBER:e1			{: RESULT = e1;        :}
-				| MINUS DEC_NUMBER:e1			{: RESULT = -e1;        :}
+f_float 		::=  par_neg DEC_NUMBER:e1		{: RESULT = e1;        :}
+				| impar_neg DEC_NUMBER:e1		{: RESULT = -e1;        :}
 				| DEC_NUMBER:e1					{: RESULT = e1;        :}
+				| par_neg MEM:e1				{: RESULT = mem;    :}
+				| impar_neg MEM:e1				{: RESULT = -mem;        :}
+				| MEM:e1						{: RESULT = mem;        :}
 				| p_float:e1					{: RESULT = e1;        :}
 				;
 				
@@ -108,6 +114,7 @@ p_float 		::= LPAREN e_float:e1 RPAREN	{: RESULT = e1;        :}
 				| SIN LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.sin(e1);        :}
 				| COS LPAREN e_int:e1 RPAREN	{: RESULT = (float)Math.cos(e1);        :}
 				;  
+				
 //sustitucion de uminus				      
 par_neg 		::= MINUS MINUS
 				| par_neg MINUS MINUS

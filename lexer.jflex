@@ -86,7 +86,7 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 
 <YYINITIAL> {
 
-  {Whitespace} {}
+  "="          { return symbolFactory.newSymbol("EQ", EQ); }
   ";"          { return symbolFactory.newSymbol("SEMI", SEMI); }
   "+"          { return symbolFactory.newSymbol("PLUS", PLUS); }
   "-"          { return symbolFactory.newSymbol("MINUS", MINUS); }
@@ -99,11 +99,13 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   "log"        { return symbolFactory.newSymbol("LOG", LOG); }
   "sin"        { return symbolFactory.newSymbol("SIN", SIN); }
   "cos"        { return symbolFactory.newSymbol("COS", COS); }
+  "MEM"		   { return symbolFactory.newSymbol("MEM", MEM); }
   {Int_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext())); }
   {Dec_Number} { return symbolFactory.newSymbol("DEC_NUMBER", DEC_NUMBER, Float.parseFloat(yytext())); }
   {Hex_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(2, yytext().length()), 16));}
   {Oct_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(3, yytext().length()), 8));}
   {Comment}	   { }
+  {Whitespace} {}
   }
 
 
