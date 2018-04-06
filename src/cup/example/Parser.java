@@ -819,7 +819,7 @@ class CUP$Parser$actions {
 		Location e2xright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.peek()).xright;
 		Integer e2 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		//@@CUPDBG33
- RESULT = e1/e2;        
+ RESULT = e1/e2.floatValue();        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("t_float",9, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -851,7 +851,7 @@ class CUP$Parser$actions {
 		Location e2xright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.peek()).xright;
 		Float e2 = (Float)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		//@@CUPDBG35
- RESULT = e1/e2;        
+ RESULT = e1.floatValue()/e2;        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("t_float",9, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

@@ -37,7 +37,7 @@ terminal Integer    	INT_NUMBER;
 terminal Float 			DEC_NUMBER, MEM;
 /* Non terminals */
 non terminal            expr_list,par_neg, impar_neg, plus;
-non terminal Integer    e_int, t_int, f_int, p_int;      // used to store evaluated subexpressions
+non terminal Integer    e_int, t_int, f_int, p_int;
 non terminal Float 		e_float, t_float, f_float, p_float;
 
 /* Precedences 
@@ -90,9 +90,9 @@ e_float 		::=	e_float:e1 PLUS t_float:e2	{: RESULT = e1+e2;        :}
 t_float 		::= t_float:e1 TIMES f_float:e2 {: RESULT = e1*e2;        :}
 				| t_float:e1 DIVIDEBY f_float:e2{: RESULT = e1/e2;        :}
 				| t_float:e1 TIMES f_int:e2 	{: RESULT = e1*e2;        :}
-				| t_float:e1 DIVIDEBY f_int:e2	{: RESULT = e1/e2;        :}
+				| t_float:e1 DIVIDEBY f_int:e2	{: RESULT = e1/e2.floatValue();        :}
 				| t_int:e1 TIMES f_float:e2 	{: RESULT = e1*e2;        :}
-				| t_int:e1 DIVIDEBY f_float:e2	{: RESULT = e1/e2;        :}
+				| t_int:e1 DIVIDEBY f_float:e2	{: RESULT = e1.floatValue()/e2;        :}
 				| t_int:e1 DIVIDEBY f_int:e2	{: RESULT = e1.floatValue()/e2.floatValue();        :}
 				| f_float:e1					{: RESULT = e1;        :}
 				;
