@@ -69,6 +69,8 @@ t_int 		::= t_int:e1 TIMES f_int:e2 		{: RESULT = e1*e2;        :}
 				
 f_int 		::= par_neg INT_NUMBER:e1			{: RESULT = e1;        :}
 				| impar_neg INT_NUMBER:e1		{: RESULT = -e1;       :}
+				| par_neg p_int:e1				{: RESULT = e1;        :}
+				| impar_neg p_int:e1			{: RESULT = -e1;       :}
 				| INT_NUMBER:e1					{: RESULT = e1;        :}
 				| p_int:e1						{: RESULT = e1;        :}
 				;
@@ -97,6 +99,8 @@ t_float 		::= t_float:e1 TIMES f_float:e2 {: RESULT = e1*e2;        :}
 				
 f_float 		::=  par_neg DEC_NUMBER:e1		{: RESULT = e1;        :}
 				| impar_neg DEC_NUMBER:e1		{: RESULT = -e1;        :}
+				| par_neg  p_float:e1			{: RESULT = e1;        :}
+				| impar_neg  p_float:e1			{: RESULT = -e1;        :}
 				| DEC_NUMBER:e1					{: RESULT = e1;        :}
 				| par_neg MEM:e1				{: RESULT = mem;    :}
 				| impar_neg MEM:e1				{: RESULT = -mem;        :}

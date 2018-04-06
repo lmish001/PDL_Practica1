@@ -54,8 +54,7 @@ import java.io.InputStreamReader;
     }
 %}
 
-Newline    = \r | \n | \r\n
-Whitespace = [ \t\f] | {Newline}
+Whitespace = [ \t\f] | {LineTerminator}
 NumLiteral = [0-9]*
 HexLiteral = [0-9a-fA-F]*
 OctLiteral = [0-7]*
@@ -67,11 +66,10 @@ Oct_Number = 0 [xX] 0 {OctLiteral}
 Number = {Int_Number}|{Dec_Number}|{Hex_Number}|{Oct_Number}
 Op = "+"|"-"|"*"|"/"
 /* comments */
-Comment ="%%" {frase}* {Newline}
-frase = {palabra} | {palabra} {Whitespace}*
-palabra = [A-Za-z0-9]*
 
-/*uminus*/
+Comment = "%%" {InputCharacter}* {LineTerminator}?
+LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r\n]
 
 ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 
@@ -104,7 +102,7 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   {Dec_Number} { return symbolFactory.newSymbol("DEC_NUMBER", DEC_NUMBER, Float.parseFloat(yytext())); }
   {Hex_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(2, yytext().length()), 16));}
   {Oct_Number} { return symbolFactory.newSymbol("INT_NUMBER", INT_NUMBER, Integer.parseInt(yytext().substring(3, yytext().length()), 8));}
-  {Comment}	   { }
+  {Comment}	   {}
   {Whitespace} {}
   }
 
